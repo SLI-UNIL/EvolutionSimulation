@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class UIController : MonoBehaviour
 {
@@ -13,6 +14,13 @@ public class UIController : MonoBehaviour
     public Toggle autoUpdateToggle;
     public Slider lodSlider;
     public TextMeshProUGUI lodTextValue;
+    public TextMeshProUGUI noiseScaleTextValue;
+    public TextMeshProUGUI octaveTextValue;
+    public TextMeshProUGUI persistanceTextValue;
+    public TextMeshProUGUI lacunarityTextValue;
+    public TextMeshProUGUI seedTextValue;
+    public TextMeshProUGUI offsetXTextValue, offsetYTextValue;
+    public TextMeshProUGUI meshHeightMultTextValue;
 
     private void Start()
     {
@@ -26,6 +34,13 @@ public class UIController : MonoBehaviour
         autoUpdateToggle.isOn = mapGenerator.autoUpdate;
         lodSlider.value = mapGenerator.levelOfDetail;
         setLoDTextValue(mapGenerator.levelOfDetail);
+        setNoiseScaleTextValue(mapGenerator.noiseScale);
+        setOctavesTextValue(mapGenerator.octaves);
+        setPersistanceTextValue(mapGenerator.persistance);
+        setLacunarityTextValue(mapGenerator.lacunarity);
+        setSeedTextValue(mapGenerator.seed);
+        setOffsetTextValue();
+        setMeshHeightMultTextValue(mapGenerator.meshHeightMultiplier);
     }
 
     private void Update()
@@ -58,29 +73,115 @@ public class UIController : MonoBehaviour
         }
     }
 
-    public void setLoD(float newVal)
+    public void setAutoUpdate(bool newVal)
     {
-        mapGenerator.levelOfDetail = (int)newVal;
-        setLoDTextValue(newVal);
-
+        mapGenerator.autoUpdate = newVal;
+        updateMapIfNeeded();
+    }
+    public void updateMapIfNeeded()
+    {
         if (mapGenerator.autoUpdate == true)
         {
             mapGenerator.GenerateMap();
         }
     }
 
-    public void setAutoUpdate(bool newVal)
+    public void setLoD(float newVal)
     {
-        mapGenerator.autoUpdate = newVal;
+        mapGenerator.levelOfDetail = (int)newVal;
+        setLoDTextValue(newVal);
 
-        if (mapGenerator.autoUpdate == true)
-        {
-            mapGenerator.GenerateMap();
-        }
+        updateMapIfNeeded();
+    }
+    public void setNoiseScale(float newVal)
+    {
+        mapGenerator.noiseScale = newVal;
+        setNoiseScaleTextValue(newVal);
+
+        updateMapIfNeeded();
+    }
+    public void setOctaves(float newVal)
+    {
+        mapGenerator.octaves = (int)newVal;
+        setOctavesTextValue((int)newVal);
+
+        updateMapIfNeeded();
+    }
+    public void setPersistance(float newVal)
+    {
+        mapGenerator.persistance = newVal;
+        setPersistanceTextValue(newVal);
+
+        updateMapIfNeeded();
+    }
+    public void setLacunarity(float newVal)
+    {
+        mapGenerator.lacunarity = newVal;
+        setLacunarityTextValue(newVal);
+
+        updateMapIfNeeded();
+    }
+    public void setSeed(float newVal)
+    {
+        mapGenerator.seed = (int)newVal;
+        setSeedTextValue((int)newVal);
+
+        updateMapIfNeeded();
+    }
+    public void setOffsetX(float newVal)
+    {
+        mapGenerator.offset.x = newVal;
+        setOffsetTextValue();
+
+        updateMapIfNeeded();
+    }
+    public void setOffsetY(float newVal)
+    {
+        mapGenerator.offset.y = newVal;
+        setOffsetTextValue();
+
+        updateMapIfNeeded();
+    }
+    public void setMeshHeightMult(float newVal)
+    {
+        mapGenerator.meshHeightMultiplier = newVal;
+        setMeshHeightMultTextValue(newVal);
+
+        updateMapIfNeeded();
     }
 
     private void setLoDTextValue(float newVal)
     {
         lodTextValue.text = newVal.ToString("F0");
     }
+    private void setNoiseScaleTextValue(float newVal)
+    {
+        noiseScaleTextValue.text = newVal.ToString("F2");
+    }
+    private void setOctavesTextValue(int newVal)
+    {
+        octaveTextValue.text = newVal.ToString();
+    }
+    private void setPersistanceTextValue(float newVal)
+    {
+        persistanceTextValue.text = newVal.ToString("F2");
+    }
+    private void setLacunarityTextValue(float newVal)
+    {
+        lacunarityTextValue.text = newVal.ToString("F2");
+    }
+    private void setSeedTextValue(int newVal)
+    {
+        seedTextValue.text = newVal.ToString();
+    }
+    private void setOffsetTextValue()
+    {
+        offsetXTextValue.text = mapGenerator.offset.x.ToString("F2");
+        offsetYTextValue.text = mapGenerator.offset.y.ToString("F2");
+    }
+    private void setMeshHeightMultTextValue(float newVal)
+    {
+        meshHeightMultTextValue.text = newVal.ToString();
+    }
+
 }
